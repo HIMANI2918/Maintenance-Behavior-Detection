@@ -1,0 +1,9 @@
+names:
+- standing
+- lying
+- eating
+nc: 3
+path: cattle_behavior_project/data
+test: images/test
+train: images/train
+val: images/val
