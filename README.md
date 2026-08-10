@@ -1,6 +1,6 @@
 # Cattle Behavior Detection System
 
-A YOLOv8-based system that detects and tracks cattle behaviors — **drinking, standing, eating, lying** — in video footage, and generates HTML/JSON reports summarizing behavior over time.
+A YOLOv8n-based system that detects and tracks cattle behaviors — **drinking, standing, eating, lying** — in video footage, and generates HTML/JSON reports summarizing behavior over time.
 
 All core logic lives in `cattle_detection_system.py` (the `CattleBehaviorDetector` class). Two other files help you run it on an HPC/Slurm cluster:
 
@@ -38,7 +38,7 @@ If you're a new user cloning this repo, here's exactly what to change:
 ## Requirements
 
 - Python 3.9+
-- `ultralytics` (YOLOv8)
+- `ultralytics` (YOLOv8n)
 - `torch` (with CUDA if using GPU)
 - `opencv-python`
 - `supervision`
@@ -59,7 +59,7 @@ Training uses **only** `cattle_detection_system.py`. All you need is a Roboflow-
 ```python
 from cattle_detection_system import CattleBehaviorDetector
 
-# Start from a pretrained YOLOv8 model (no model_path = uses yolov8n.pt)
+# Start from a pretrained YOLOv8n model (no model_path = uses yolov8n.pt)
 detector = CattleBehaviorDetector()
 
 # 1. Create the project folder structure (data/, models/, results/, configs/, etc.)
