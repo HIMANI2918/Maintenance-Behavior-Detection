@@ -49,18 +49,6 @@ If you're a new user cloning this repo, here's exactly what to change:
 ```bash
 pip install ultralytics torch opencv-python supervision pandas numpy matplotlib seaborn scikit-learn pyyaml openpyxl
 ```
-
-## Pretrained Model Weights
-
-Two trained YOLOv8n checkpoints are included in this repository:
-
-| Checkpoint | Training data | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 |
-|---|---|---|---|---|---|
-| `daytime_model_best.pt` | Daytime frames only | 0.898 | 0.924 | 0.943 | 0.629 |
-| `daytime_nighttime_model_best.pt` | Daytime + Nighttime frames | *(see manuscript Table 1/2)* | | | |
-
-Metrics above are validation-set values at the retained checkpoint (selected by Ultralytics' internal fitness score, not necessarily the final training epoch). Both checkpoints were trained with Ultralytics YOLOv8 (version 8.3.159) for 100 epochs, batch size 16, image size 640×640 — see [Training Configuration](#training-configuration-all-models) below for the full hyperparameter set used across all compared architectures, and [Multi-Model Comparison & Testing](#multi-model-comparison--testing) for how to reproduce the held-out test-set evaluation for either checkpoint.
-
 ## Training Configuration (all models)
 
 All eight architectures compared in this work (YOLOv3-tiny, YOLOv8n, YOLOv8s, YOLOv8m, YOLOv8x, YOLOv10l, YOLO11l, YOLO12l) were trained under the following explicitly specified hyperparameters:
