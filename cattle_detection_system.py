@@ -990,7 +990,7 @@ class CattleBehaviorDetector:
         # Extract metrics
         metrics = {
             'overall_mAP50': float(results.box.map50),
-            'overall_mAP50_95': float(results.box.map),
+            'overall_mAP50_90': float(results.box.map),
             'per_class_mAP50': results.box.maps.tolist() if results.box.maps is not None else [],
             'precision': float(results.box.mp),
             'recall': float(results.box.mr),
@@ -1001,7 +1001,7 @@ class CattleBehaviorDetector:
         print(f"\n🎯 MODEL ACCURACY REPORT")
         print(f"{'='*60}")
         print(f"Overall mAP@0.5: {metrics['overall_mAP50']:.3f} ({metrics['overall_mAP50']*100:.1f}%)")
-        print(f"Overall mAP@0.5:0.95: {metrics['overall_mAP50_95']:.3f} ({metrics['overall_mAP50_95']*100:.1f}%)")
+        print(f"Overall mAP@0.5:0.90: {metrics['overall_mAP50_90']:.3f} ({metrics['overall_mAP50_90']*100:.1f}%)")
         print(f"Overall Precision: {metrics['precision']:.3f} ({metrics['precision']*100:.1f}%)")
         print(f"Overall Recall: {metrics['recall']:.3f} ({metrics['recall']*100:.1f}%)")
         print(f"\nPer-Class Performance:")
