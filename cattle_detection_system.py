@@ -1,5 +1,5 @@
-# Cattle Behavior Detection System using YOLOv8
-# Complete project for detecting cattle behaviors: drinking, standing, lying, eating
+# Cattle Behavior Detection System using YOLOv8n
+# Complete code for detecting cattle behaviors: drinking, standing, lying, eating
 
 import os
 import cv2
@@ -22,6 +22,9 @@ import supervision as sv
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+IMPUTATION_PRIORITY = ['lying', 'standing', 'eating']
+
 
 class CattleBehaviorDetector:
     """
@@ -571,24 +574,16 @@ class CattleBehaviorDetector:
                 frame_behaviors[behavior] += 1
                 behavior_stats[behavior] += 1
             
-            # Apply cattle count logic: undetected cattle are assumed to be lying
-            if detected_count < expected_cattle_count and (frame_behaviors['lying'] >= frame_behaviors['standing'] and frame_behaviors['lying'] >= frame_behaviors['eating']):
+            # Normalization loop: assign undetected cattle to the dominant behavior
+            # (lying > standing > eating on ties; drinking is never imputed).
+            # Frames with >= expected_cattle_count detections are left unchanged.
+            if detected_count < expected_cattle_count:
+                dominant = max(IMPUTATION_PRIORITY,
+                               key=lambda b: (frame_behaviors[b], -IMPUTATION_PRIORITY.index(b)))
                 missing_cattle = expected_cattle_count - detected_count
-                frame_behaviors['lying'] += missing_cattle
-                behavior_stats['lying'] += missing_cattle
-                logger.debug(f"Frame {frame_count}: Added {missing_cattle} lying cattle (detected: {detected_count}/{expected_cattle_count})")
-            elif detected_count < expected_cattle_count and (frame_behaviors['standing'] > frame_behaviors['lying'] and frame_behaviors['standing'] >= frame_behaviors['eating']):
-                #assuming undetected are standing if too many animals are standing
-                missing_cattle = expected_cattle_count - detected_count
-                frame_behaviors['standing'] += missing_cattle
-                behavior_stats['standing'] += missing_cattle
-                logger.debug(f"Frame {frame_count}: Adjusted standing count by {missing_cattle} (detected: {detected_count}/{expected_cattle_count})")
-            elif detected_count < expected_cattle_count and (frame_behaviors['eating'] > frame_behaviors['lying'] and frame_behaviors['eating'] > frame_behaviors['standing']):
-                # assuming undetected are eating if too many animals are eating
-                missing_cattle = expected_cattle_count - detected_count
-                frame_behaviors['eating'] += missing_cattle
-                behavior_stats['eating'] += missing_cattle
-                logger.debug(f"Frame {frame_count}: Adjusted eating count by {missing_cattle} (detected: {detected_count}/{expected_cattle_count})")
+                frame_behaviors[dominant] += missing_cattle
+                behavior_stats[dominant] += missing_cattle
+                logger.debug(f"Frame {frame_count}: Added {missing_cattle} {dominant} cattle (detected: {detected_count}/{expected_cattle_count})")
             
             # Store frame statistics
             frame_behavior_counts.append(frame_behaviors.copy())
