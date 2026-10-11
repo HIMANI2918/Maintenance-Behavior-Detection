@@ -1,5 +1,5 @@
 # Cattle Behavior Detection System using YOLOv8n
-# Complete code for detecting cattle behaviors: drinking, standing, lying, eating
+# Complete code for detecting behaviors: drinking, standing, lying, eating
 
 import os
 import cv2
